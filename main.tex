@@ -1,0 +1,415 @@
+\documentclass{article}
+\usepackage{graphicx} % Required for inserting images
+
+\title{UNAV}
+
+
+\begin{document}
+
+\maketitle
+
+\section{Introduction}
+
+Unmanned aerial vehicles (UAVs) have rapidly evolved from niche tools to integral components of modern communication networks. In both civilian and military domains, UAVs serve as aerial relays or base stations that extend wireless coverage and provide on-demand connectivity in environments ranging from smart cities to battlefields and disaster zones. For instance, UAV networks have been deployed for applications such as urban traffic monitoring, infrastructure surveillance, and emergency communication recovery when ground networks are damaged. These aerial platforms offer flexibility and rapid deployment, enabling communication links to be established where traditional terrestrial infrastructure is infeasible or too slow to install. However, meeting the ever-increasing data demand of these applications with conventional radio frequency (RF) wireless links is challenging due to limited spectrum and susceptibility to interference. This has spurred interest in optical wireless communication (OWC), particularly free-space optical (FSO) links, as a high-capacity alternative for UAV-based networks.
+
+Optical wireless communication (OWC) uses laser or infrared beams to carry data through free space, offering fiber-optic-like bandwidth without requiring physical fiber. FSO links can achieve multi-Gbps data rates, have inherent security due to narrow beams that are hard to intercept, and are license-free. These advantages make OWC appealing for next-generation (6G) aerial networks and data-intensive missions. For example, military airborne networks can use UAV-mounted FSO transceivers to create high-speed backbones between aircraft and ground command, ensuring high-bandwidth and jam-resistant communication. Smart city planners envision UAVs with optical links connecting 5G/6G small cells or IoT sensor hubs, leveraging high data rates to backhaul urban data traffic. In disaster recovery, UAVs equipped with FSO communication have demonstrated the ability to rapidly restore connectivity with broadband links where terrestrial networks are destroyed. In all these contexts, OWC promises significant capacity gains over RF.
+
+Despite its promise, OWC via UAVs faces critical challenges. Free-space optical signals require strict line-of-sight (LoS) alignment and are highly susceptible to atmospheric conditions. Factors such as fog, rain, haze, and turbulence can attenuate or distort optical beams, leading to link outages. UAV mobility introduces additional complexity, since platform vibrations and orientation changes can cause misalignment of narrow optical beams. Techniques for acquisition, tracking, and pointing (ATP) of FSO transceivers are essential to maintain alignment with moving UAVs. Furthermore, the reliability of a single optical link in dynamic aerial scenarios can be low, especially under adverse weather.
+
+To mitigate these issues, researchers have developed hybrid RF/FSO systems that combine an optical channel with a parallel RF link. In a hybrid OWC system, the high-speed FSO link is used as the primary channel whenever conditions are favorable, and an RF link (e.g., microwave or mmWave) serves as a backup that automatically takes over during optical fades. This approach leverages the high capacity of FSO while retaining the robustness of RF, significantly enhancing overall link availability in UAV communications. For example, Zhang et al. (2023) employed a hybrid FSO/RF link between an airborne warning and control system (AWACS) plane and a ground station via UAV relays, activating the RF channel whenever optical quality fell below a QoS threshold. Such hybrid architectures are becoming crucial in ensuring consistent performance in UAV networks, as highlighted by recent surveys. The trade-off is additional hardware and switching mechanisms, but the benefit is a resilient high-capacity link that can support mission-critical data streams even in imperfect conditions.
+
+Recent research reflects a growing focus on UAV-based OWC. Comprehensive reviews document advances in UAV-assisted FSO relays, pointing out improvements in link design, channel modeling, and intelligent networking. For instance, Gupta et al. (2024) provide a detailed survey of UAV-based FSO links, outlining performance metrics and challenges such as beam tracking and atmospheric turbulence. Al-Allaq et al. (2025) specifically review the integration of UAVs with FSO for disaster response, concluding that such systems can dramatically improve emergency communications by offering high-bandwidth, secure links when ground infrastructure is compromised. Meanwhile, Nafees (2024) investigated UAV deployment strategies in hybrid FSO/RF networks, demonstrating that dynamic three-dimensional placement of UAV relays and adaptive use of mmWave RF backups can maximize throughput and energy efficiency under fog and other weather impairments. These efforts underscore a key point: OWC on UAV platforms is technically feasible and can unlock unprecedented network performance, but it requires careful design to overcome reliability challenges.
+
+Techniques such as intelligent reflecting surfaces for beam routing, adaptive divergence angle control, and machine learning for predicting channel fluctuations have been proposed to bolster UAV-based optical links. However, one aspect that remains relatively underexplored is the use of higher-layer intelligence and network automation to manage these UAV OWC systems in a holistic manner. In particular, there is an opportunity to leverage emerging federated learning techniques to add a layer of AI-driven optimization on top of the communication infrastructure.
+
+In parallel to the advancements in UAV communications, the past few years have seen rapid development of federated learning (FL) as a distributed machine learning paradigm for edge networks. Unlike traditional centralized learning, FL allows multiple devices or nodes to train a shared global model collaboratively without exchanging their raw data. Instead, each node locally trains a model on its own data and periodically uploads only the model updates to a central server or coordinating node, where they are aggregated to produce an improved global model. The updated global model is then sent back to the nodes for further iterative training. This process preserves data privacy and can reduce communication overhead by transmitting compact model updates rather than large raw datasets. Federated learning has been successfully applied in scenarios such as mobile keyboards, healthcare, and IoT sensor networks, and is increasingly seen as a key enabler for distributed edge AI in wireless networks.
+
+In the context of UAV networks, federated learning offers a compelling approach to enable collaborative intelligence among distributed aerial and ground units. UAVs often carry cameras and sensors that generate valuable local data, such as images for surveillance or disaster assessment and measurements for environmental monitoring. Rather than sending all this data to a cloud, which may be infeasible due to bandwidth or latency constraints, UAVs and ground devices under their coverage can use FL to train models locally. Several researchers have begun exploring FL for UAV-enabled systems. Brik et al. (2020) introduced the concept of federated learning in UAV-enabled wireless networks, outlining use cases such as UAVs learning collectively to optimize their flight trajectories or communication strategies, and identifying challenges like limited onboard computation and intermittent connectivity. Qu et al. (2021) proposed a decentralized FL architecture for swarms of drones, discussing how UAVs could exchange model updates with one another in a peer-to-peer manner. Yao and Ansari (2021) demonstrated that communication-efficient FL in UAV networks can be achieved through intelligent power control, ensuring reliable and secure delivery of model updates. Yazdinejad et al. (2021) applied FL for drone authentication, allowing UAVs to collaboratively train models without sharing raw identity data.
+
+Despite these advancements, there is a noticeable gap in the current research: the integration of high-speed optical wireless UAV networks with federated learning frameworks has not been thoroughly investigated. On one hand, the UAV-OWC literature largely concentrates on physical-layer issues and networking aspects but rarely considers learning-based real-time optimization. On the other hand, FL studies in UAV networks typically assume conventional RF links and abstract communication constraints. None of the surveyed works explicitly leverage the unique advantages of optical wireless links within a federated learning scheme.
+
+This is a critical research gap because the performance of FL is tightly coupled with the communication fabric. High-capacity optical links could significantly accelerate FL model aggregation, but only if the links remain dependable. At the same time, federated learning could be used to improve the operation of the optical network itself, for example by predicting atmospheric disruptions and proactively adjusting UAV formation or RF fallback. To date, such cross-layer techniques have not been realized.
+
+\textbf{{Objectives and Contributions}}
+
+In light of the above, this paper aims to integrate UAV-based hybrid optical wireless communication systems with federated learning frameworks. We conduct a comprehensive literature review of recent research from 2020 to 2025 on UAV-assisted optical wireless communications and federated learning in wireless and UAV networks. By synthesizing insights from over sixty high-impact studies, we extract key contributions and identify open research gaps at the intersection of these fields. Building on these gaps, we propose a novel UAV--OWC federated learning framework.
+
+The main contributions of this work are summarized as follows. We present a comprehensive literature synthesis covering UAV-based OWC systems and federated learning applications in UAV and wireless networks, including military, smart city, and disaster recovery scenarios. We identify open research gaps, including the lack of frameworks for FL over hybrid optical networks, unresolved issues in maintaining FL performance under time-varying link conditions, and the absence of mathematical models jointly capturing learning convergence and optical link statistics. We then propose a UAV--OWC federated learning framework that integrates UAV-based hybrid optical communication with distributed learning. The framework includes system architecture, communication modeling, learning algorithms, dynamic UAV positioning, link adaptation, and optimization formulations that connect learning performance with communication metrics such as throughput, latency, and outage probability.
+
+The remainder of this paper is organized as follows. Section~2 presents the detailed literature review. Section~3 introduces the proposed system model and methodology. Section~4 presents the experimental design and expected results, and Section~5 concludes the paper with future research directions. This work advances the state of the art in autonomous, high-capacity UAV networks by tightly integrating optical communications and federated learning.
+\section{Literature Review}
+
+\subsection{UAV-Based Optical Wireless Communication Systems}
+
+UAVs carrying optical wireless communication payloads have introduced new possibilities for high-rate aerial networking. This section reviews key developments in UAV-based OWC, with emphasis on hybrid FSO/RF system designs, channel characteristics, and use-case demonstrations in military, smart city, and disaster scenarios.
+
+\subsubsection{High-Capacity Optical Links and Hybrid FSO/RF}
+
+Conventional RF communications struggle to meet the bandwidth demands of beyond-5G applications, prompting adoption of FSO links in UAV networks. Free-space optical communication offers fiber-like data rates (multi-Gb/s) along with low power consumption and strong security due to narrow beams with little interception risk. For example, Majumdar (2014) and Kaushal et al. (2017) provide foundational overviews of FSO systems, highlighting their potential for multimedia streaming and backhaul offloading in wireless networks. However, FSO performance is tightly linked to environmental conditions: fog, heavy rain, or dust can attenuate the optical signal severely, leading to outages.
+
+To enhance reliability, researchers have widely embraced hybrid FSO/RF architectures, where an RF link (e.g., microwave or mmWave) complements the optical link. In a hybrid UAV communication system, data are normally transmitted over the FSO link, but if the optical signal quality degrades due to clouds, scintillation, or similar effects, a switch to the RF channel occurs within milliseconds to preserve the connection. This mechanism significantly improves link availability and has been theoretically and experimentally validated. Nafees (2024) showed that using UAVs as intermediate hybrid relays can boost FSO link uptime under fog by inserting a millimeter-wave hop, effectively intercepting and rerouting the beam around weather cells. Likewise, Wu et al. (2020) demonstrated a drone communication system where an optical beam carries data under clear conditions and a 5~GHz RF link automatically takes over during optical fades, ensuring continuous service for emergency responders. These studies confirm that hybrid FSO/RF is a practical solution to the weather sensitivity of FSO, especially in UAV scenarios where link distances can be dynamically adjusted by repositioning drones to mitigate weather impact.
+
+\subsubsection{Channel Modeling and Alignment Challenges}
+
+A critical aspect of UAV-based OWC is accurate channel modeling to predict performance and guide system design. Optical wireless channels are characterized by path loss, atmospheric turbulence-induced fading (scintillation), and pointing errors due to transmitter and receiver jitter. Several works have derived channel models specific to UAV platforms, which often hover or move unpredictably. Early efforts considered UAVs hovering in moderate turbulence and provided closed-form statistics for received signal intensity under log-normal fading and misalignment. For instance, Yang et al. (2019) introduced a statistical model for UAV FSO links accounting for non-zero boresight errors, showing how even slight mispointing can erode link margin.
+
+Subsequent models incorporated angle-of-arrival fluctuations caused by UAV orientation changes. Singh and Swaminathan (2022) performed a comprehensive performance analysis of a hovering UAV-based FSO link, validating that the probability of outage rises steeply with pointing error standard deviation and with stronger turbulence modeled by Rytov variance. These models inform the design of tracking systems: narrow-beam FSO requires fine steering controls. Kaymak et al. (2018) surveyed acquisition, tracking, and pointing techniques for mobile FSO, covering gimbal-stabilized optics, feedback control, and beam width optimization to maintain connectivity with moving UAVs.
+
+In practice, beam divergence angle is often intentionally widened to reduce alignment sensitivity at the cost of power density. Zhang et al. (2022) tackled this trade-off by optimizing the divergence angle for a drone-assisted FSO fronthaul link, finding an optimal angle that minimizes outage while still delivering high capacity. Such tools are vital since UAVs may not hold perfectly still; therefore, a balance between beam narrowness for throughput and wideness for robustness must be achieved. Modern systems also employ fast steering mirrors and GPS-aided pointing to dynamically correct beam alignment during flight.
+
+\subsubsection{Network Topologies and Relaying}
+
+Beyond single links, UAV-OWC research has explored multi-hop networks and relay topologies to extend coverage. Serial FSO relays, where UAVs are daisy-chained with optical links, and parallel relays, where multiple UAVs provide redundant paths, have been investigated for performance gains. Parallel relaying can significantly lower end-to-end outage by offering multiple spatially diverse channels, effectively creating an optical mesh network in the sky.
+
+Zhang et al. (2023) proposed a multi-UAV relay system connecting an aircraft to a ground station with two-hop FSO links and introduced four relay selection modes such as best-relay and all-relay schemes. They derived closed-form expressions for the outage probability under each mode and found that an optimal number of UAV relays exists. Too few relays increase hop distance and reduce reliability, while too many relays introduce additional pointing interfaces and complexity. Their results indicate that in aeronautical scenarios such as AWACS links, two to three UAV relays at optimal altitudes provide a good balance between coverage and reliability.
+
+UAV swarms with FSO inter-drone links forming flying ad hoc networks are also being studied. Sharma et al. (2022) discussed emerging military applications using UAV swarms with FSO-based vertical backhaul, where drones relay data from ground units to a high-altitude aerial backbone and onward to command centers. The appeal is the low probability of detection and interception offered by FSO. Kumar and Sharma (2022) demonstrated a prototype FSO fronthaul for military 5G networks and emphasized the need for standardization and robust error correction to handle battlefield dust and smoke.
+
+\subsubsection{Use Case: Disaster Recovery}
+
+UAV-OWC systems have gained particular traction in disaster and emergency response scenarios. When natural disasters strike, terrestrial communication infrastructure is often disabled, causing communication blackouts at the very time when high bandwidth is most needed. UAVs equipped with FSO links can be rapidly deployed to establish a temporary high-throughput backbone. Al-Allaq et al. (2025) concluded that UAV-based FSO systems are pivotal technological assets in disaster management by providing agile, high-bandwidth, secure, and interference-resistant connectivity.
+
+Compared to satellite links, drone FSO links operate at lower altitudes with lower latency and higher capacity, and compared to RF-only solutions they provide much higher data rates for applications such as live HD video streaming. Wu et al. (2019) demonstrated a drone-assisted FSO mobile access network where tethered drones formed a two-hop optical link between a core network and a field base station, enabling real-time streaming of video and sensor data. An EU project known as RESTORE used low-altitude drones to create non-line-of-sight optical links by reflecting signals off hovering relays, enabling reliable links even in obstructed environments.
+
+Another innovation is laser-based power delivery, where a high-powered laser beams energy to photovoltaic cells on drones, allowing them to remain airborne while simultaneously transmitting data. Such systems were demonstrated in 2020 for emergency drones with extended endurance. The literature shows that combining UAV mobility with FSO bandwidth can significantly improve emergency communication resilience, although vulnerability to weather motivates hybrid designs and intelligent route planning.
+
+\subsubsection{Use Case: Smart Cities and 5G/6G Networks}
+
+In smart city environments, UAV-based optical links are being explored as a component of future 5G and 6G infrastructure. UAVs can serve as flying base stations or relays, and FSO enables them to connect to fiber-like backhaul without using licensed spectrum. Zhang et al. (2022) studied a drone-assisted network using FSO backhaul and optimized beam divergence and pointing to minimize outage in urban environments. Yu et al. (2023) addressed backhaul-aware UAV placement by jointly selecting drone positions and assigning FSO backhaul links to gateways based on weather statistics.
+
+These studies showed significant throughput gains over RF-only backhaul, provided that RF fallback links were available during optical outages. LiFi-based optical links between drones and urban infrastructure have also been investigated experimentally. Memon et al. (2025) reported rapid growth in research on UAV-enabled hybrid FSO/RF networks, identifying energy efficiency and standardized UAV corridors as key emerging trends.
+
+\subsubsection{Use Case: Military Communications}
+
+Military applications are a major driver of UAV-based OWC. FSO links offer high bandwidth, resistance to jamming, and low probability of interception. Zhang et al. (2023) evaluated an AWACS-to-ground link using multiple UAV relays with hybrid FSO/RF and demonstrated that such links can support real-time sensor data and high-resolution imagery. Kumar and Sharma (2022) described covert vertical FSO relays where data collected by ground forces is sent optically to UAVs and onward to satellites, creating highly secure communication paths.
+
+Research has also explored quantum key distribution over UAV-based FSO links, enabling ultra-secure key exchange. As UAV swarms grow, optical inter-drone networks are being investigated as high-speed flying backbones. Gai et al. (2021) and Seid et al. (2023) noted that blockchain and federated learning can be layered on these optical networks to enable secure and autonomous group communication.
+
+In conclusion, UAV-based optical wireless communication has matured significantly over the past five years. Hybrid FSO/RF designs, advanced channel modeling, alignment solutions, and successful demonstrations in disaster, smart city, and military scenarios have proven the feasibility and value of high-bandwidth UAV links. However, the complexity of managing such dynamic networks motivates the integration of intelligent learning-based techniques, which leads naturally to federated learning as discussed in the next subsection.
+\subsection{Federated Learning in UAV and Wireless Networks}
+
+Federated learning has emerged as a promising approach to distribute intelligence across network nodes, and its application in wireless and UAV networks has attracted substantial research interest. In this section, we review the fundamentals of FL in the wireless context, key studies that incorporate FL into UAV networking, and the challenges that arise therein.
+
+\subsubsection{FL in Wireless Networks -- Overview}
+
+The concept of federated learning was popularized for privacy-preserving mobile applications, but it quickly permeated into wireless communications research as a way to perform distributed optimization and artificial intelligence at the network edge. Niknam et al.\ (2020) outlined the motivation for FL in wireless communications: enormous amounts of data are generated at user devices and edge sensors, and transmitting all of it to a central cloud is inefficient or impossible; FL can utilize this data where it is generated to train models that improve network operations, such as traffic prediction and resource allocation, while significantly reducing backhaul usage and protecting user privacy.
+
+In an FL process, devices perform local training and send model updates over the network. This introduces a tight coupling between the communication infrastructure and learning performance, an aspect that sets FL apart from traditional learning. Issues such as limited wireless bandwidth, variable link quality, and device heterogeneity, including different processing power and data sizes, can all impact the convergence speed and accuracy of the federated model.
+
+Consequently, a large body of recent research has focused on communication-efficient FL algorithms. Strategies include compressing model updates to reduce payload, scheduling only a subset of clients in each round to mitigate stragglers on slow links, and asynchronous updates that allow faster nodes to proceed without waiting for slower ones. For example, the FedAvg algorithm introduced by McMahan et al.\ (2017) serves as the baseline where a central server averages the updates from all participating clients in each round. Building on this, Oort (2021) and TiFL (2021) introduced intelligent client selection strategies that choose participants with good data quality and connection speed in order to improve the time-to-accuracy tradeoff.
+
+In the wireless domain, techniques such as adjusting transmission power or controlling modulation rates for model update packets have been explored to ensure that messages from edge devices arrive reliably and simultaneously. A comprehensive survey by Nguyen et al.\ (2021) provides an overview of FL for Internet of Things networks, categorizing methods to handle data heterogeneity, intermittent connectivity, and security issues in federated settings. Their findings stress that robust aggregation schemes and fault tolerance, when some devices drop out or send corrupted updates, are crucial for FL in any wireless scenario.
+
+\subsubsection{FL in UAV Networks -- Use Cases}
+
+Applying federated learning to UAV networks enables a variety of use cases in which UAVs or the devices they serve can collaboratively improve performance. Brik et al.\ (2020) was one of the first works to articulate these opportunities, framing FL as a tool for UAV-enabled wireless networks and discussing several examples.
+
+One use case is distributed sensing and mapping. A fleet of UAVs surveying a large area for agriculture, disaster search-and-rescue, or surveillance can collect images of their respective sectors and train local AI models, such as for crop disease detection or victim identification. By using FL to aggregate these models, the UAV fleet can build a powerful global model that encompasses data from all sectors without transmitting raw images, which could otherwise amount to hundreds of gigabytes. This approach not only saves bandwidth but also preserves privacy, since sensitive images are kept local.
+
+Another use case is collaborative autonomy. Multiple UAVs can learn a shared policy or predictive model to coordinate their movements. For instance, a drone swarm could federatively learn a navigation policy that avoids collisions and minimizes travel time based on local observations of obstacles and neighboring drones, effectively forming a distributed control system trained by FL. A study by Zeng et al.\ (2020) examined how a swarm of drones could jointly learn optimal power allocation and task scheduling strategies for an aerial communication network. In their system, each drone evaluated local channel conditions and workloads, trained a model of optimal transmission scheduling, and shared updates so that the group as a whole improved its protocol for managing interference and throughput. Their results indicated that this approach can outperform static optimization, especially as conditions change due to mobility or node churn.
+
+Qu et al.\ (2021) emphasized the role of FL in handling heterogeneity in UAV networks, where different drones may have different sensors, computing capabilities, or data quality. They proposed an architecture in which drones form clusters and elect leader nodes to aggregate updates locally before a final global aggregation step. This hierarchical FL approach reduces communication burden on distant or energy-constrained drones and is particularly useful in long-range UAV networks or large-scale drone swarms.
+
+\subsubsection{Challenges in UAV-Based FL}
+
+While promising, FL over UAV networks introduces several challenges. Communication constraints are particularly severe, as wireless links may be intermittent due to mobility and bandwidth may be limited if relying on narrowband control channels. Yao and Ansari (2021) addressed this by proposing a power control algorithm that ensures timely delivery of updates, dynamically increasing transmission power for drones with weaker links so that all updates reach the aggregator before the deadline. Their framework highlights that power control can both speed up convergence and enhance security by limiting unnecessary radio emissions.
+
+UAVs are also resource constrained. Many small drones have limited battery capacity and modest processors, so participating in heavy local training or long communication rounds can be costly. Participant selection therefore becomes critical: not every drone should take part in every FL round. Selection may be based on heuristics such as battery level and link quality, or on more formal optimization methods such as multi-armed bandits or reinforcement learning.
+
+Another major challenge is data heterogeneity. Different UAVs may observe very different environments, leading to non-independent and non-identically distributed data. This can slow convergence or bias the global model. Techniques such as weighted aggregation and algorithmic variants including FedProx and FedMA have been proposed to handle such non-IID data. Brik et al.\ (2020) noted that UAV network FL will often deal with highly non-IID data, motivating the need for new aggregation rules or pre-training strategies.
+
+Security and trust are also critical in federated learning, especially in adversarial UAV environments. Distributed learning opens the door to model poisoning attacks, in which compromised drones send malicious updates. Researchers have proposed combining blockchain with FL to enhance trust, allowing updates to be recorded in a tamper-resistant ledger and validated through smart contracts. Saraswat et al.\ (2022) developed a blockchain-based FL framework for UAV networks, showing how this approach can mitigate the impact of rogue drones. Yazdinejad et al.\ (2021) applied FL to UAV authentication, with each drone locally training a classifier to distinguish genuine communication from spoofing, and the aggregated model achieving high detection accuracy.
+
+\subsubsection{Experimental Demonstrations}
+
+Although much of the research on FL in UAV networks has been simulation-based, real-world experiments are emerging. Fu et al.\ (2024) studied a UAV-enabled FL system in which a physical UAV acted as a flying parameter server. In their scenario, a UAV hovered over a region containing ground devices and followed an optimized trajectory to establish strong short-range links with each device in turn, collecting model updates rapidly. By avoiding communication bottlenecks, they demonstrated that FL training time can be significantly reduced compared with a static base station.
+
+Another experiment by Konda et al.\ (2024) involved UAVs participating in hierarchical FL for weather forecasting. Their results showed that weighting model updates by data reliability can prevent poor-quality data from degrading the global model, thereby improving prediction accuracy. These experiments demonstrate how UAV mobility, communication design, and FL algorithms must be co-optimized.
+
+In summary, federated learning is a powerful tool for enabling collaborative, data-driven optimization in UAV networks. It has been applied to enhance network management, enable privacy-preserving analytics, and improve security through distributed intrusion detection and authentication. Key challenges such as communication efficiency, node selection, and data heterogeneity are actively being addressed, with solutions ranging from algorithmic refinements to the integration of FL with technologies such as blockchain. These advances point toward increasingly autonomous and intelligent UAV networks that can adapt to their environment through collective learning. This motivates the integration of federated learning with the high-bandwidth optical networks discussed earlier, and sets the stage for the unified framework proposed in the next sections.
+\subsection{Research Gaps at the Intersection of OWC and FL}
+
+From the above reviews, it is evident that hybrid optical wireless UAV communications and federated learning in UAV networks have each been studied extensively, but largely in isolation. The integration of these two domains is still in its infancy, presenting several open research gaps and opportunities.
+
+\subsubsection{Lack of Integrated Frameworks}
+
+To date, there is no comprehensive framework that blends UAV-based OWC with federated learning. Researchers have not yet answered how an optical backbone of UAVs can support federated learning tasks, or how FL can assist in managing an optical UAV network. Most UAV-FSO studies assume conventional network control, and most UAV-FL studies assume basic RF links. A unified architecture is needed where the unique characteristics of FSO, such as high throughput and intermittent connectivity, are factored into the federated learning algorithm. This includes developing scheduling and aggregation schemes that account for variable link quality or temporary outages on optical links. For example, if a UAV’s laser link drops due to fog in the middle of training, the federated learning round must be able to handle this gracefully. Currently, such questions remain unanswered.
+
+\subsubsection{Communication--Learning Trade-Offs}
+
+There is a gap in understanding the quantitative trade-offs between communication performance and learning performance in these systems. For instance, given a fixed total bandwidth combining optical and RF links, how should resources be allocated to maximize the accuracy of a trained model within a given time? Traditional federated learning theory provides convergence bounds as a function of data distribution and the number of communication rounds, while communication theory provides outage probability and capacity formulas. However, linking these together through a joint analytical model is an open challenge. No known work yet provides a mathematical formulation that captures both the optical channel statistics and the federated learning convergence behavior in one unified model. Developing such a model would enable optimized system design, such as choosing an FSO link rate or coding scheme that maximizes learning efficiency rather than only physical throughput.
+
+\subsubsection{Dynamic Topology and Mobility}
+
+UAV networks are inherently dynamic, with nodes that move, join, and leave, and optical links that may require frequent reconfiguration through beam steering or relay switching. Federated learning, in contrast, typically assumes a fixed set of participants over many training rounds. Bridging this gap requires new algorithms. A key question is how to perform federated learning when the set of available drones or link connections changes over time. Some training rounds may need to skip a UAV that moved out of line-of-sight, while a new UAV may enter with fresh data that should be rapidly incorporated. Existing FL algorithms for wireless networks only partly address this through client selection, but in an optical UAV network, changes can be more abrupt, as links may drop entirely due to obstruction or weather. There is therefore a need for robust FL protocols that can gracefully handle time-varying participant availability and packet losses, which is particularly relevant for FSO-based networks that are prone to outages.
+
+\subsubsection{Resource Constraints and Energy Efficiency}
+
+Operating high-data-rate optical transceivers and running on-board machine learning both consume significant energy, which is scarce on battery-powered UAVs. None of the surveyed works explicitly examines the combined impact of these factors. For example, using an optical link at full power for fast model uploads could drain a drone’s battery faster, potentially reducing the time it can spend collecting data or the number of FL rounds it can participate in. Conversely, performing more local computation to reduce communication rounds may also tax the processor and battery. An open question is how to balance computation and communication energy in a federated learning UAV system. Techniques such as adaptive local training epochs, with more epochs when communication is costly and fewer when links are excellent, could be explored but have not been specifically studied in the context of optical communication. Energy-aware federated learning in UAVs remains a nascent topic, and when combined with OWC it becomes an even richer problem, since optical transmissions have different energy profiles than RF.
+
+\subsubsection{Experimental Validation and Prototyping}
+
+Much of the existing work in both domains is theoretical or simulation-based. There is a clear gap in real-world experiments that combine UAV optical links with on-board federated learning. Building a prototype would face challenges ranging from hardware alignment to software coordination, but would greatly inform theoretical models. For example, a field test with two drones exchanging model updates via FSO under varying weather conditions could provide insight into required error correction, latency, and synchronization failures. Similarly, testing a small drone fleet performing federated learning while an optical link intermittently drops could reveal which fault-tolerant FL algorithm is most suitable. The lack of datasets and testbeds is a major gap that has been acknowledged by Memon et al.\ (2025), who call for open testbeds for UAV-based hybrid communication networks to evaluate these interdisciplinary systems in practice.
+
+\subsubsection{Security and Privacy Considerations}
+
+Both optical communication and federated learning introduce distinct security considerations. While FSO is highly secure against external eavesdropping, the federated learning process can be vulnerable to compromised participants or inference attacks on the global model. An open research question is how to secure the FL process within an optical UAV network. Techniques such as differentially private federated learning or blockchain-based verification may be especially important to guard against malicious drones. To date, no work has proposed a dedicated security framework for federated learning over UAV-OWC networks, despite the sensitive nature of applications such as military operations and surveillance.
+
+In conclusion, the intersection of UAV-based OWC and federated learning is rich with research opportunities. The literature provides the building blocks of high-bandwidth, flexible communication from the OWC side and distributed, intelligent computation from the FL side, but these have not yet been fully integrated. Current networks do not leverage learning to manage optical links, and current FL schemes do not exploit optical links to accelerate learning. This gap motivates the methodology proposed in the next section, which aims to integrate federated learning into a UAV hybrid optical and RF communication system. By addressing challenges such as dynamic topology, resource management, and communication--learning trade-offs, the proposed approach seeks to create a network that is both high-throughput and intelligent, capable of self-optimizing through federated learning while delivering the performance promised by optical wireless communication.
+\section{Proposed Methodology}
+
+Building on the identified gaps, we propose a unified framework that integrates UAV-based hybrid optical wireless communications with a federated learning (FL) paradigm. The goal is to enable a network of UAVs to not only provide high-speed connectivity via optical links, but also to intelligently adapt and learn from network conditions and data trends in a distributed manner. In this section, we outline the system model, key components of the proposed methodology, and the mathematical modeling approach for analyzing and optimizing the system. The proposed methodology is designed with flexibility to accommodate military, smart city, or disaster-recovery deployments by adjusting scenario-specific parameters, such as the number of UAVs, presence of infrastructure, and data types, while the core principles remain applicable across contexts.
+
+\subsection{System Model and Network Architecture}
+
+\subsubsection{Network Topology}
+
+We consider a network consisting of a set of $U$ UAVs acting as aerial communication nodes, a certain number of ground nodes, which may include user devices, IoT sensors, or ground base stations, and optionally a central coordinator, which could be a high-altitude platform or a ground server. The UAVs are equipped with dual communication interfaces: free-space optical (FSO) transceivers for line-of-sight optical links between UAVs and possibly between UAVs and the coordinator, and RF transceivers, such as millimeter-wave or sub-6\,GHz radios, for backup links and connectivity to ground nodes.
+
+The UAVs may be deployed in a multi-hop configuration, for instance forming an aerial relay chain between a data source and a destination, or as a one-hop access network where each UAV directly connects to a ground cluster and uses an optical backhaul to a central node. A conceptual example architecture consists of UAVs $A$, $B$, and $C$ forming a two-hop FSO relay from a ground command center to a remote area, while each UAV also serves nearby user devices via short-range RF, and all UAVs participate in a federated learning loop to optimize service delivery.
+
+\subsubsection{Hybrid Optical/RF Links}
+
+Each communication link between nodes is configured as hybrid FSO/RF. In the primary mode, UAVs communicate using tightly directed optical beams, either laser-based or LED-based for shorter ranges. These FSO links provide a high data rate $R_{\text{FSO}}$, for example 1--10~Gbps, but require maintaining line-of-sight and sufficient received optical power.
+
+The received power $P_r$ on an FSO link between UAV $i$ and $j$ can be modeled as
+\[
+P_r = P_t \cdot h_{ij} \cdot \exp(-\sigma d_{ij}) \cdot \Lambda(\theta_{ij}),
+\]
+where $P_t$ is the transmit power, $h_{ij}$ represents channel fading or turbulence gain on the optical path, $\exp(-\sigma d_{ij})$ accounts for atmospheric attenuation over distance $d_{ij}$ with $\sigma$ being the weather attenuation coefficient, and $\Lambda(\theta_{ij})$ is the geometric coupling loss due to the pointing error $\theta_{ij}$, which depends on UAV orientation and beam width.
+
+An outage on the optical link is considered to occur if $P_r$ falls below a receiver sensitivity threshold, which can be translated into a maximum tolerable $\sigma$ or $\theta$ beyond which the FSO channel cannot support the required rate. When an outage is detected or predicted, for example through sensing or monitoring the bit error rate, the link switches to RF. The RF link has a lower nominal capacity $R_{\text{RF}} < R_{\text{FSO}}$, but is generally unaffected by optical visibility and has a wider beam, making it more robust to misalignment.
+
+We assume that each hybrid link continuously monitors the FSO channel quality and triggers RF takeover when the instantaneous FSO signal-to-noise ratio drops below a target threshold $\gamma_{\min}$. The hybrid links are therefore characterized by two states: an FSO state with high data rate and low error, and an RF state with moderate data rate and comparatively higher latency. We denote by $p_{\text{FSO}}(t)$ the probability that a given link is in the FSO state at time $t$, which depends on weather and alignment conditions and will be incorporated into the federated learning performance analysis.
+
+\subsubsection{Federated Learning Setup}
+
+Federated learning is employed among the UAVs and possibly some ground clients to train a global machine learning model relevant to the network mission. The nature of the model depends on the application scenario, such as target recognition in military operations, traffic prediction in smart cities, or damage assessment in disaster recovery.
+
+Each participant holds a local dataset or real-time data stream. One node is designated as the FL aggregator or server, which may be a specific UAV or a ground server if infrastructure is available. Without loss of generality, we assume a UAV $U_{\text{agg}}$ acts as the aggregator. The FL process proceeds in rounds $r = 1, 2, \ldots$. At the beginning of round $r$, the aggregator holds a global model parameter vector $\mathbf{w}^{(r)}$, which is distributed to participating nodes using the high-bandwidth optical network.
+
+Each client $k$ performs local training on its data, for example by computing gradients or running several epochs of stochastic gradient descent, to obtain an updated model $\mathbf{w}_k^{(r)}$ or an update $\Delta \mathbf{w}_k$. Each client then uploads its update to the aggregator over the hybrid optical/RF links. In a single-hop topology, UAVs may upload directly to $U_{\text{agg}}$. In a multi-hop topology, updates may be relayed through intermediate UAVs until they reach the aggregator, with RF used as a fallback whenever any optical hop is unavailable.
+
+After collecting the updates, the aggregator forms the next global model using weighted averaging,
+\[
+\mathbf{w}^{(r+1)} = \sum_k \frac{n_k}{N_{\text{total}}} \mathbf{w}_k^{(r)},
+\]
+where $n_k$ is the local data size of client $k$ and $N_{\text{total}}$ is the total number of samples across all clients. This process repeats until a stopping criterion such as a target accuracy or maximum number of rounds is reached.
+
+\subsubsection{Participant Selection and Scheduling}
+
+Not all UAVs participate in every FL round due to resource and reliability constraints. The aggregator includes a scheduler that decides which UAVs and ground clients are active in each round. This decision is based on the current network state. For example, if a UAV’s optical link is currently unavailable and it is operating in RF fallback mode, the scheduler may exclude that UAV to avoid delaying the round, unless the UAV holds critical or unique data.
+
+These decisions can be formulated as an optimization problem or handled by a heuristic policy, such as including only UAVs whose FSO availability probability $p_{\text{FSO}}$ exceeds a given threshold. Scheduling also interacts with UAV mobility. Since UAVs can reposition, they may temporarily move into formations that improve optical connectivity during FL aggregation, and then return to their primary mission positions. For high-priority learning tasks, UAVs could be instructed to adjust altitude or formation to improve link quality, for example to avoid cloud cover during optical transmissions. This joint use of communication and mobility control is a key feature of the proposed framework.
+\subsection{Federated Learning Algorithm Adaptation}
+
+In the proposed framework, we adapt the standard federated averaging algorithm to account for the UAV optical network’s characteristics. Key adaptations include the following.
+
+\subsubsection{Weighted Aggregation with Link Awareness}
+
+Instead of simple averaging, the aggregator can weight each client’s update not only by data size but also by a confidence factor related to link quality. For example, if a UAV’s update had to be sent over an RF backup due to an FSO failure, it may have lower fidelity or arrive late. Such updates can be assigned a lower weight or even dropped if they are too delayed, analogous to staleness handling in federated learning.
+
+Formally, if $g_k$ is the gradient update from client $k$ and $\tau_k$ is the transmission delay for that update, the aggregation rule is
+\[
+\mathbf{w}^{(r+1)} = \mathbf{w}^{(r)} - \eta \sum_{k \in \mathcal{S}_r} \alpha_k g_k,
+\]
+where $\mathcal{S}_r$ is the set of selected clients in round $r$, $\eta$ is the learning rate, and $\alpha_k$ are the aggregation weights. A possible definition is
+\[
+\alpha_k = \frac{n_k}{N_{\text{total}}} \times \mathbb{1}(\tau_k \le T_{\max}),
+\]
+where $\mathbb{1}(\cdot)$ is an indicator function equal to one if the update arrived before the deadline $T_{\max}$ and zero otherwise. This ensures that only timely contributions are used. The deadline may be set to the optical frame duration or a fraction of it. By tuning these parameters, the system trades off between waiting for all UAVs and proceeding with partial updates, which affects both learning speed and potential bias.
+
+\subsubsection{Client Selection and Clustering}
+
+A hierarchical approach is integrated for large networks. In deployments with many UAVs, UAVs with strong mutual FSO links can be clustered. Each cluster performs a local federated learning step, possibly electing a cluster-head UAV to aggregate cluster updates, after which cluster heads participate in a higher-level federated learning process. This two-tier approach reduces long-distance communication.
+
+Clusters are formed dynamically based on the current topology. For example, UAVs within mutual optical range may synchronize frequently, while distant groups exchange updates less often, possibly through multi-hop relays. This approach is especially useful in disaster scenarios where UAVs are spread over large areas. Clustering heuristics based on the connectivity graph can be employed and their impact on learning latency and accuracy evaluated.
+
+\subsubsection{Compression and Coding}
+
+To efficiently utilize the high bandwidth when available and gracefully fall back when not, we employ adaptive model compression. When UAVs communicate over FSO, they can afford to send full-precision updates, for example using 32-bit floating-point values for all model parameters. If a UAV operates on an RF backup link with a lower data rate during a given federated learning round, it compresses its update through quantization or sparsification to fit within the round duration. In this way, the training round does not stall, and the update arrives on time, albeit with reduced precision.
+
+Our framework incorporates established federated learning compression techniques such as QSGD and Top-$k$ sparsification, combined with a link-aware trigger mechanism. Specifically, if the link capacity $C_k$ of client $k$ satisfies
+\[
+C_k < C_{\text{thr}},
+\]
+the client compresses its update to a size of $X$ bytes. If
+\[
+C_k \ge C_{\text{thr}},
+\]
+indicating a high-quality FSO link, the client transmits the full update with size $Y$, where $Y \gg X$. The threshold $C_{\text{thr}}$ is selected as the minimum data rate required to transmit the full model update within one training round.
+
+The impact of mixed-precision updates on learning performance is analyzed in terms of convergence behavior. Federated learning is generally robust to approximate updates, particularly when lower-fidelity updates are assigned smaller aggregation weights. Nevertheless, we explicitly verify that convergence remains stable under this adaptive compression strategy. This approach preserves the advantages of FSO links, namely fast and accurate updates, while ensuring continued operation over RF links without disrupting the federated learning process.
+
+\subsubsection{Mobility Optimization for Federated Learning}
+
+A novel aspect of the proposed framework is the proactive use of UAV mobility to enhance federated learning performance. Inspired by prior work in which UAV motion is used to mitigate stragglers, we allow small adjustments in UAV positions during communication rounds to improve optical link quality. For example, if a UAV experiences degradation due to cloud obstruction along its line-of-sight path to the aggregator, it may be instructed to move laterally or adjust its altitude by a limited amount to restore a clearer optical channel.
+
+This behavior is formulated as an optimization problem in which each UAV $i$ controls its three-dimensional position $(x_i, y_i, z_i)$ within predefined mobility constraints. The objective is to maximize a communication utility, such as the minimum optical link margin or the aggregate data rate during the federated learning communication phase. Let $Q_{ij}(x_i, x_j)$ denote the quality metric, such as signal-to-noise ratio or achievable rate, of the optical link between UAVs $i$ and $j$ as a function of their positions. For a given federated learning round in which a set of UAVs $\mathcal{S}_r$ transmit updates to an aggregator UAV $a$, the optimization can be expressed as
+\[
+\max_{\{x_i\}} \; \min_{i \in \mathcal{S}_r} Q_{ia}(x_i, x_a),
+\]
+subject to velocity and position constraints that limit how far UAVs can move within a single round.
+
+This optimization problem is generally non-convex, and therefore heuristic or reinforcement learning-based approaches may be employed to adjust UAV positions efficiently. Over successive training rounds, UAVs can learn favorable communication locations that consistently yield high-quality optical links. For instance, UAVs may discover that hovering above a certain altitude avoids ground obstructions and atmospheric disturbances, thereby improving link reliability.
+
+In disaster-response scenarios, this may result in UAVs temporarily forming line-of-sight alignments to synchronize model updates rapidly before returning to their sensing or surveying formations. The proposed methodology incorporates a dynamic control loop between the federated learning controller and UAV autopilot systems, transforming the network into a self-optimizing system in which UAV mobility is continuously adapted to maximize learning efficiency. The underlying mathematical model builds upon classical UAV placement and trajectory optimization problems, extended here to explicitly account for federated learning performance metrics.
+
+\subsection{Optimization Problem Formulation}
+
+To rigorously design and evaluate the integrated system, we formulate a joint optimization problem that captures the interplay between the federated learning process and the communication network.
+
+\subsubsection{Objective}
+
+The objective is to minimize the total federated learning training time, or equivalently the number of rounds multiplied by the round duration, in order to reach a target model accuracy $\alpha^*$.
+
+\subsubsection{Variables}
+
+We define the following decision variables.
+
+Binary variables for client selection in each round:
+\[
+s_k^{(r)} \in \{0,1\},
+\]
+indicating whether UAV or device $k$ is selected in round $r$.
+
+Continuous variables for UAV position or trajectory:
+\[
+(x_i^{(r)}, y_i^{(r)}, z_i^{(r)}),
+\]
+for UAV $i$ during round $r$.
+
+Transmission resource allocation variables, such as transmit power:
+\[
+p_k^{(r)},
+\]
+or time slot allocation for each client in round $r$.
+
+The selection of FSO versus RF is treated as a function of UAV positions and weather conditions.
+
+\subsubsection{Constraints}
+
+\paragraph{Model Convergence Constraint}
+
+We require that after $R$ rounds the global model accuracy satisfies
+\[
+A(R) \ge \alpha^*.
+\]
+
+Using federated learning convergence theory for smooth loss functions, a typical bound is
+\[
+A(r) \ge A(0) - \frac{L}{2}\eta^2 \sum_{t=1}^{r} \sum_{k \in \mathcal{S}_t} \| g_k^{(t)} - g^{(t)} \|^2,
+\]
+where $g^{(t)}$ is the true global gradient and $L$ is a Lipschitz constant. This indicates that more participants and more rounds improve accuracy, and the objective implicitly drives this requirement.
+
+\paragraph{Communication Constraints}
+
+For each round $r$ and each selected client $k$, the upload time must satisfy
+\[
+T_k^{(r)} = \frac{\text{model\_size}}{B_k^{(r)}},
+\]
+and
+\[
+s_k^{(r)} = 1 \;\Rightarrow\; T_k^{(r)} \le T_{\text{round}},
+\]
+where $B_k^{(r)}$ is the achieved data rate, which depends on UAV positions, the aggregator position, and transmission power.
+
+\paragraph{UAV Mobility Constraints}
+
+Each UAV can move only a limited distance per round:
+\[
+\|x_i^{(r)} - x_i^{(r-1)}\| \le v_{\max} T_{\text{round}},
+\]
+with altitude limits such as
+\[
+z_{\min} \le z_i^{(r)} \le z_{\max}.
+\]
+
+\paragraph{Energy Constraints}
+
+Each UAV has a maximum available energy $E_{\max,i}$. The total energy over $R$ rounds must satisfy
+\[
+E_i^{\text{total}} = \sum_{r=1}^{R} E_i^{(r)}(x_i^{(r)}, p_i^{(r)}) \le E_{\max,i}.
+\]
+
+A per-round budget may also be imposed:
+\[
+E_i^{(r)} \le E_{\text{budget}}.
+\]
+
+Low-energy UAVs may be forced to skip rounds by setting $s_i^{(r)} = 0$.
+
+\subsubsection{Overall Optimization Problem}
+
+A simplified form of the joint optimization is
+\[
+\min_{s_k^{(r)},\, x_i^{(r)},\, p_k^{(r)}} \; R \cdot T_{\text{round}}
+\]
+
+subject to, for all rounds $r$ and clients $k$,
+\[
+s_k^{(r)} \frac{\text{model\_size}}{B_k^{(r)}(x_k^{(r)}, x_{\text{agg}}^{(r)}, p_k^{(r)})} \le T_{\text{round}},
+\]
+
+\[
+\sum_{r=1}^{R} s_k^{(r)} \frac{n_k}{N_{\text{total}}} \ge \kappa_k,
+\]
+
+\[
+\|x_i^{(r)} - x_i^{(r-1)}\| \le v_{\max} T_{\text{round}},
+\]
+
+\[
+E_i^{\text{total}} \le E_{\max,i},
+\]
+
+and
+\[
+A(R) \ge \alpha^*.
+\]
+
+Here, $\kappa_k$ enforces that each client contributes a sufficient fraction of updates.
+
+\subsubsection{Solution Approach}
+
+This problem is mixed-integer and non-linear, making exact optimization intractable for large $U$. We therefore adopt an iterative and heuristic approach.
+
+First, given fixed participants and UAV positions, we minimize the round time by allocating link resources, prioritizing FSO links when available and scheduling RF transmissions when needed.
+
+Second, given participants and link states, UAV positions are adjusted to improve $B_k$ for the next round using gradient ascent or reinforcement learning, where the reward is the reduction in round time or improvement in model loss.
+
+Finally, we design a participant scheduling policy across rounds. This may include round-robin selection, importance-based scheduling based on data uniqueness, or always including all UAVs unless they consistently cause delays.
+
+All scheduling policies are validated via simulation to ensure that model accuracy does not degrade significantly compared to full participation.
+\subsection{Expected Outcomes and Evaluation Plan}
+
+Although this section goes slightly beyond methodology, it is included to illustrate how the success of the integrated system will be evaluated. We plan to evaluate the proposed UAV--OWC--FL framework through a combination of simulation and theoretical analysis. Key performance metrics will include model convergence time, measured as the number of seconds or rounds required to reach the target accuracy, final model accuracy or F1-score depending on the task, communication overhead including the total data transmitted and the number of optical versus RF handovers, and network reliability, measured as the fraction of time the network remains in optical mode rather than degraded to RF.
+
+We will compare the integrated approach against baseline scenarios including federated learning over an RF-only UAV network, a non-federated approach where raw data is centralized over the optical network, and a static network with no learning-based adaptation. These baselines allow us to quantify the benefit of optical bandwidth, the bandwidth savings achieved by federated learning, and the gains from learning-based optimization. For example, in a disaster scenario simulation, the proposed framework is expected to allow a model such as a damage assessment classifier to reach approximately 90\% accuracy in a few minutes of training, whereas an RF-only network may require significantly more time due to lower bandwidth, and a static non-learning network may fail to adapt when conditions change.
+
+The mathematical modeling ensures that these improvements are not ad hoc but grounded in analysis of the system behavior. By incorporating federated learning into UAV optical networks, we expect synergistic benefits: the high capacity of optical wireless communication accelerates federated learning by reducing communication bottlenecks, while federated learning enables UAV networks to self-optimize in real time for changing conditions, such as predicting fog outages and proactively reconfiguring links or learning optimal times and methods to exchange updates.
+
+\subsubsection{Mathematical Modeling Spotlight}
+
+To illustrate the interplay between communication and learning, consider a simple analytical scenario with two UAVs performing federated learning over an optical link with RF backup. Let the optical link have an outage probability $p_{\text{out}}$ per FL round due to weather. If an outage occurs, the update is sent over RF and takes longer, with optical transmission time $t_o$ and RF transmission time $t_{rf} > t_o$. The expected duration of one FL round is
+\[
+E[T_{\text{round}}] = (1 - p_{\text{out}}) t_o + p_{\text{out}} t_{rf}.
+\]
+
+Assuming the update is always successfully received, either via FSO or RF, the total time over $R$ rounds is approximately
+\[
+T_{\text{total}} \approx R \big[(1 - p_{\text{out}}) t_o + p_{\text{out}} t_{rf}\big].
+\]
+
+To reach the target accuracy $\alpha^*$, at least $R_{\min}$ rounds are required, where $R_{\min}$ depends on the data and learning rate. The total training time is therefore
+\[
+T_{\text{train}} \approx R_{\min} \big[(1 - p_{\text{out}}) t_o + p_{\text{out}} t_{rf}\big].
+\]
+
+Reducing the outage probability $p_{\text{out}}$, for example by repositioning UAVs to avoid fog, or reducing the RF transmission time $t_{rf}$ through higher-rate RF links or compression, directly decreases the total training time. This simple analysis will be extended in the evaluation using more realistic models such as stochastic weather processes and multi-client RF interference.
+
+In conclusion, the proposed methodology provides a blueprint for integrating federated learning into UAV-based hybrid optical wireless networks. By jointly considering communication and computation and grounding the design in mathematical modeling, the framework is expected to improve both network throughput and learning outcomes across applications such as disaster recovery, smart cities, and coordinated drone swarms. The claims will be validated through extensive simulations and, in future work, real-world experiments, paving the way for practical deployment of intelligent UAV networks that learn and adapt to fulfill their missions efficiently and reliably.
+
+
+
+\end{document}
